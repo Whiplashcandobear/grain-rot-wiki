@@ -26,17 +26,23 @@ main{max-width:760px;margin:36px auto;padding:0 20px}
 h2{color:var(--theme);font-size:20px;margin:0 0 8px}
 p{margin:0 0 10px}
 .back{display:inline-block;margin:24px 0;color:var(--theme);text-decoration:none;font-weight:600}
+.related ul{margin:0;padding-left:18px;columns:2;column-gap:24px}
+.related li{margin:4px 0}
+.related a{color:var(--theme2);text-decoration:none}
+.related a:hover{text-decoration:underline}
 footer{border-top:1px solid #2a241c;padding:20px;color:var(--muted);font-size:13px;text-align:center}
+@media(max-width:700px){.related ul{columns:1}}
 </style>
 </head>
 <body>
-<header><div class="logo">GRAIN ROT WIKI</div><nav class="nav"><a href="../index.html">Home</a><a href="../index.html#start">Guides</a><a href="../index.html#about">About</a></nav></header>
+<header><div class="logo">GRAIN ROT WIKI</div><nav class="nav"><a href="../index.html">Home</a><a href="../index.html#guides">Guides</a><a href="../index.html#about">About</a></nav></header>
 <main>
 <div class="hero"><h1>GRAIN ROT Save File - Location &amp; Backup</h1><p>GRAIN ROT save file: Steam Cloud manages saves; local path follows Steam userdata/SteamID/4450620. Backup before updates.</p></div>
 <section class='blk'><h2>Where saves live</h2><p>Saves are handled by Steam, both through Steam Cloud and a local file. The local pattern is typically Steam/userdata/&lt;SteamID&gt;/4450620/remote/ - confirm the exact subfolder in-game, because Valve&#x27;s layout can vary slightly by title.</p></section>
 <section class='blk'><h2>Known issues already fixed</h2><p>Patch 1.02 fixed offline save loading, and patch 1.03 fixed a save bug that caused black-void loads and key-binding saves to misbehave. Those fixes mean modern saves are far more stable than at launch.</p></section>
 <section class='blk'><h2>Backup first</h2><p>Before any update, back up the userdata directory or rely on Steam Cloud. Verify your save loaded correctly after each patch, since the early post-launch bugs show saves are worth protecting.</p></section>
 
+<section class='blk related'><h2>Related guides</h2><ul><li><a href='grain-rot-mods.html'>grain rot mods</a></li></ul></section>
 <a class="back" href="../index.html">&larr; Back to GRAIN ROT Wiki</a>
 </main>
 <footer>GRAIN ROT Wiki is a fan-made, independent guide hub. Not affiliated with Beck &amp; Branch Games or Neem Interactive. Sources: Steam app 4450620, official patch notes, media coverage.</footer>

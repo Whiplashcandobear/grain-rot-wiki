@@ -53,6 +53,42 @@ def ga_head():
 def canonical(path_abs_url):
     return '<link rel="canonical" href="%s">' % esc(path_abs_url)
 
+def slugify(k):
+    return k.replace(" ", "-").replace("  ", "-")
+
+# ---- full page index (category -> [(keyword, filename)]) for interlinking ----
+# Every inner page MUST be reachable from the home page, otherwise it is an
+# orphan page and Google will not crawl it (L5 manual: internal links matter).
+PAGE_INDEX = []
+for _cat in kw["categories"]:
+    _items = [(it["keyword"], slugify(it["keyword"]) + ".html") for it in _cat["keywords"]]
+    PAGE_INDEX.append((_cat.get("label") or _cat.get("name") or "Guides", _items))
+
+def home_guides_section():
+    """All 19 inner pages, grouped by keyword category."""
+    out = ""
+    for cat_name, items in PAGE_INDEX:
+        lis = "".join(
+            "<li><a href='inner/%s'>%s</a></li>" % (esc(fn), esc(k))
+            for k, fn in items)
+        out += "<div class='gcol'><h3>%s</h3><ul>%s</ul></div>" % (esc(cat_name), lis)
+    return out
+
+def related_section(current_keyword):
+    """Sibling pages in the same category + cross-category picks."""
+    same, others = [], []
+    for cat_name, items in PAGE_INDEX:
+        hit = any(k == current_keyword for k, _ in items)
+        for k, fn in items:
+            if k == current_keyword:
+                continue
+            (same if hit else others).append((k, fn))
+    picks = same[:6] or others[:6]
+    if not picks:
+        return ""
+    lis = "".join("<li><a href='%s'>%s</a></li>" % (esc(fn), esc(k)) for k, fn in picks)
+    return "<section class='blk related'><h2>Related guides</h2><ul>%s</ul></section>" % lis
+
 # ---- per-keyword page content (real, cross-verified; "待确认" where unverified) ----
 pages = {
     "grain rot guide": {
@@ -274,18 +310,24 @@ main{max-width:760px;margin:36px auto;padding:0 20px}
 h2{color:var(--theme);font-size:20px;margin:0 0 8px}
 p{margin:0 0 10px}
 .back{display:inline-block;margin:24px 0;color:var(--theme);text-decoration:none;font-weight:600}
+.related ul{margin:0;padding-left:18px;columns:2;column-gap:24px}
+.related li{margin:4px 0}
+.related a{color:var(--theme2);text-decoration:none}
+.related a:hover{text-decoration:underline}
 footer{border-top:1px solid #2a241c;padding:20px;color:var(--muted);font-size:13px;text-align:center}
+@media(max-width:700px){.related ul{columns:1}}
 </style>
 </head>
 <body>
-<header><div class="logo">GRAIN ROT WIKI</div><nav class="nav"><a href="../index.html">Home</a><a href="../index.html#start">Guides</a><a href="../index.html#about">About</a></nav></header>
+<header><div class="logo">GRAIN ROT WIKI</div><nav class="nav"><a href="../index.html">Home</a><a href="../index.html#guides">Guides</a><a href="../index.html#about">About</a></nav></header>
 <main>
 <div class="hero"><h1>%s</h1><p>%s</p></div>
+%s
 %s
 <a class="back" href="../index.html">&larr; Back to GRAIN ROT Wiki</a>
 </main>
 <footer>GRAIN ROT Wiki is a fan-made, independent guide hub. Not affiliated with Beck &amp; Branch Games or Neem Interactive. Sources: Steam app 4450620, official patch notes, media coverage.</footer>
-</body></html>""" % (esc(title), esc(desc), canonical(abs_url), ga_head(), THEME_CSS, esc(title), esc(desc), body)
+</body></html>""" % (esc(title), esc(desc), canonical(abs_url), ga_head(), THEME_CSS, esc(title), esc(desc), body, related_section(k))
 
 def render_home():
     h = info["home"]
@@ -298,7 +340,7 @@ def render_home():
     about_p = "".join("<p>%s</p>" % esc(p) for p in h["aboutGame"]["paragraphs"])
     f = info["footer"]
     ol = info["officialLinks"]
-    home_abs = SITE_DOMAIN + "/index.html"
+    home_abs = SITE_DOMAIN + "/"   # canonical must be the served root, not /index.html
     return """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -340,11 +382,21 @@ def render_home():
 footer{border-top:1px solid #2a241c;padding:28px 20px;color:var(--muted);font-size:13px;max-width:900px;margin:40px auto;text-align:center}
 footer a{color:var(--theme);text-decoration:none}
 .kw{color:var(--muted);font-size:12px;margin-top:8px}
-@media(max-width:900px){.sidebar{display:none}.cards{grid-template-columns:1fr}}
+.guides{max-width:900px;margin:40px auto;padding:0 20px}
+.guides h2{color:var(--theme);font-size:26px;margin-bottom:6px}
+.guides .lead{color:var(--muted);margin:0 0 20px;font-size:15px}
+.gwrap{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.gcol{background:var(--surface);border:1px solid #2a241c;border-radius:12px;padding:16px 18px}
+.gcol h3{margin:0 0 10px;color:var(--theme2);font-size:15px}
+.gcol ul{margin:0;padding-left:16px}
+.gcol li{margin:6px 0;font-size:14px}
+.gcol a{color:var(--text);text-decoration:none}
+.gcol a:hover{color:var(--theme);text-decoration:underline}
+@media(max-width:900px){.sidebar{display:none}.cards{grid-template-columns:1fr}.gwrap{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header><div class="logo">GRAIN ROT WIKI</div><nav class="nav"><a href="#start">Guides</a><a href="#about">About</a><a href="#footer">Links</a></nav></header>
+<header><div class="logo">GRAIN ROT WIKI</div><nav class="nav"><a href="#start">Start Here</a><a href="#guides">All Guides</a><a href="#about">About</a><a href="#footer">Links</a></nav></header>
 <aside class="sidebar"><h4>Redeem / 兑换码</h4><div class="code">%s</div><div class="code" style="margin-top:8px">%s</div></aside>
 <section class="hero">
 <div class="eyebrow">%s</div>
@@ -358,6 +410,11 @@ footer a{color:var(--theme);text-decoration:none}
 </div>
 </section>
 <section id="start" class="cards">%s</section>
+<section id="guides" class="guides">
+<h2>All GRAIN ROT guides</h2>
+<p class="lead">Every page below answers one specific question about GRAIN ROT, written from cross-verified Steam, patch-note and community sources.</p>
+<div class="gwrap">%s</div>
+</section>
 <section id="about" class="about">
 <h2>%s</h2>
 <div class="abp">%s</div>
@@ -391,6 +448,7 @@ footer a{color:var(--theme);text-decoration:none}
         esc(h["hero"]["secondaryCta"]),
         esc(h["hero"]["tertiaryCta"]),
         cards,
+        home_guides_section(),
         esc(h["aboutGame"]["title"]),
         about_p,
         about_stats,
@@ -424,7 +482,7 @@ def build_sitemap(urls):
 
 # ---- write pages ----
 open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(render_home())
-all_urls = [SITE_DOMAIN + "/index.html"]
+all_urls = [SITE_DOMAIN + "/"]
 for cat in kw["categories"]:
     for item in cat["keywords"]:
         k = item["keyword"]
