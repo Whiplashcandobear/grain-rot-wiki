@@ -319,7 +319,7 @@ footer{border-top:1px solid #2a241c;padding:20px;color:var(--muted);font-size:13
 </style>
 </head>
 <body>
-<header><div class="logo">GRAIN ROT WIKI</div><nav class="nav"><a href="../index.html">Home</a><a href="../index.html#guides">Guides</a><a href="../index.html#about">About</a></nav></header>
+<header><div class="logo">GRAIN ROT WIKI</div><nav class="nav"><a href="../index.html">Home</a><a href="../index.html#guides">Guides</a><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy.html">Privacy</a><a href="grain-rot-codes.html">Codes</a></nav></header>
 <main>
 <div class="hero"><h1>%s</h1><p>%s</p></div>
 %s
@@ -328,6 +328,50 @@ footer{border-top:1px solid #2a241c;padding:20px;color:var(--muted);font-size:13
 </main>
 <footer>GRAIN ROT Wiki is a fan-made, independent guide hub. Not affiliated with Beck &amp; Branch Games or Neem Interactive. Sources: Steam app 4450620, official patch notes, media coverage.</footer>
 </body></html>""" % (esc(title), esc(desc), canonical(abs_url), ga_head(), THEME_CSS, esc(title), esc(desc), body, related_section(k))
+
+def render_static(page_title, meta_desc, body_html, abs_url, prefix=""):
+    """Generic full page (about/contact/privacy/codes) matching site theme.
+    prefix="../" when the page lives under site/inner/ (so relative links resolve)."""
+    nav = ("<a href='%sindex.html'>Home</a>"
+           "<a href='%sindex.html#guides'>Guides</a>"
+           "<a href='%sabout.html'>About</a>"
+           "<a href='%scontact.html'>Contact</a>"
+           "<a href='%sprivacy.html'>Privacy</a>"
+           "<a href='%sinner/grain-rot-codes.html'>Codes</a>" % (prefix, prefix, prefix, prefix, prefix, prefix))
+    back = "<a class='back' href='%sindex.html'>&larr; Back to GRAIN ROT Wiki</a>" % prefix
+    return """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>%s</title>
+<meta name="description" content="%s">
+%s
+%s
+<style>
+%s
+main{max-width:760px;margin:36px auto;padding:0 20px}
+.hero{background:linear-gradient(135deg,#1c1813,#241a12);border:1px solid #2a241c;border-radius:14px;padding:30px;margin-bottom:28px}
+.hero h1{margin:0 0 12px;font-size:30px;color:var(--theme2)}
+.hero p{color:var(--muted);margin:0}
+.blk{background:var(--surface);border:1px solid #2a241c;border-radius:12px;padding:18px 20px;margin:16px 0}
+h2{color:var(--theme);font-size:20px;margin:0 0 8px}
+p{margin:0 0 10px}
+ul{margin:0 0 10px;padding-left:18px}
+a{color:var(--theme2)}
+.back{display:inline-block;margin:24px 0;color:var(--theme);text-decoration:none;font-weight:600}
+footer{border-top:1px solid #2a241c;padding:20px;color:var(--muted);font-size:13px;text-align:center}
+</style>
+</head>
+<body>
+<header><div class="logo">GRAIN ROT WIKI</div><nav class="nav">%s</nav></header>
+<main>
+<div class="hero"><h1>%s</h1></div>
+%s
+%s
+</main>
+<footer>GRAIN ROT Wiki is a fan-made, independent guide hub. Not affiliated with Beck &amp; Branch Games or Neem Interactive. Sources: Steam app 4450620, official patch notes, media coverage.</footer>
+</body></html>""" % (esc(page_title), esc(meta_desc), canonical(abs_url), ga_head(), THEME_CSS, nav, esc(page_title), body_html, back)
 
 def render_home():
     h = info["home"]
@@ -396,7 +440,7 @@ footer a{color:var(--theme);text-decoration:none}
 </style>
 </head>
 <body>
-<header><div class="logo">GRAIN ROT WIKI</div><nav class="nav"><a href="#start">Start Here</a><a href="#guides">All Guides</a><a href="#about">About</a><a href="#footer">Links</a></nav></header>
+<header><div class="logo">GRAIN ROT WIKI</div><nav class="nav"><a href="#start">Start Here</a><a href="#guides">All Guides</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="inner/grain-rot-codes.html">Codes</a></nav></header>
 <aside class="sidebar"><h4>Redeem Codes</h4><div class="code">%s</div><div class="code" style="margin-top:8px">%s</div></aside>
 <section class="hero">
 <div class="eyebrow">%s</div>
@@ -490,6 +534,51 @@ for cat in kw["categories"]:
         abs_url = SITE_DOMAIN + "/inner/" + fname
         all_urls.append(abs_url)
         open(os.path.join(INNER, fname), "w", encoding="utf-8").write(render_inner(item, abs_url))
+
+# ---- L6 gap pages: codes / about / contact / privacy ----
+# These close real gaps: no redeem-code page existed, and AdSense requires
+# /about + /contact + /privacy to look like a legitimate site (not a stub).
+codes_body = """
+<section class='blk'><h2>Active Grain Rot Codes</h2><p>There are currently no active redeem codes for GRAIN ROT. The developers (Beck &amp; Branch Games / Neem Interactive) have not released any promotional or event codes as of August 2026. This page is updated monthly — check back for new codes.</p></section>
+<section class='blk'><h2>How Redeem Codes Work</h2><p>When codes are released, they are typically redeemed in-game through a settings or pause-menu "Redeem Code" option. Codes are case-sensitive and usually single-use per account. Both active and expired codes with their rewards will be listed here once available.</p></section>
+<section class='blk'><h2>Where Codes Are Announced</h2><p>Official codes are shared on the game's Steam news hub, official Discord, and the developers' social channels (X / Reddit). Follow those to be the first to know when new codes drop.</p></section>
+"""
+about_body = """
+<section class='blk'><h2>What is GRAIN ROT Wiki</h2><p>GRAIN ROT Wiki is a fan-made, independent guide hub for GRAIN ROT — the co-op extraction horror game with base-building, developed by Beck &amp; Branch Games and Neem Interactive (Steam app 4450620). We compile gameplay guides, character and enemy references, multiplayer info, platform details, mechanics, mods, and a general reference into one structured resource.</p></section>
+<section class='blk'><h2>Our Sources</h2><p>All content is cross-verified from public sources: the official Steam store/app page, developer patch notes, media coverage, and community-discussed strategies. Where information is unverified, pages are marked accordingly.</p></section>
+<section class='blk'><h2>Not Affiliated</h2><p>This site is not affiliated with, endorsed by, or sponsored by Beck &amp; Branch Games or Neem Interactive. "GRAIN ROT" and related names are property of their respective owners. All guides are written by fans for fans.</p></section>
+"""
+contact_body = """
+<section class='blk'><h2>Get in Touch</h2><p>GRAIN ROT Wiki is a non-commercial fan project. For corrections, missing info, or general feedback, the best way to reach the community and developers is through the official channels:</p>
+<ul>
+<li>Steam community hub (official)</li>
+<li>Official Discord (official)</li>
+<li>Reddit (community)</li>
+<li>X / Twitter (official updates)</li>
+</ul>
+<p>We monitor these channels and incorporate verified corrections into the wiki.</p></section>
+<section class='blk'><h2>Corrections &amp; Takedown</h2><p>If you are a rights holder and wish to request a correction or content removal, please reach out via the official community links above. This is an independent fan guide and we respect intellectual property.</p></section>
+"""
+privacy_body = """
+<section class='blk'><h2>Overview</h2><p>This privacy policy explains how GRAIN ROT Wiki (an independent fan site) handles information when you visit grainrotgame.com.</p></section>
+<section class='blk'><h2>What We Collect</h2><p>We do not require accounts, and we do not intentionally collect personal information. Like most websites, we use Google Analytics 4 (GA4) to understand aggregate traffic (pages viewed, approximate region, device type). GA4 uses cookies and may collect standard IP-derived data processed in aggregate.</p></section>
+<section class='blk'><h2>Cookies &amp; Analytics</h2><p>GA4 sets cookies to distinguish visitors and measure engagement. You can disable cookies in your browser or use privacy extensions; this will not break the site's content.</p></section>
+<section class='blk'><h2>Third-Party Links</h2><p>This site links to Steam, Discord, Reddit, and X. Those platforms have their own privacy policies; we are not responsible for their data practices.</p></section>
+<section class='blk'><h2>Contact</h2><p>For privacy questions, reach us through the official community channels listed on our Contact page.</p></section>
+"""
+static_pages = [
+    ("Grain Rot Codes (August 2026)", "Grain Rot redeem codes - active and expired codes, how they work, and where they are announced.", codes_body, SITE_DOMAIN + "/inner/grain-rot-codes.html", "inner/grain-rot-codes.html", "../"),
+    ("About GRAIN ROT Wiki", "What GRAIN ROT Wiki is, our sources, and our independent fan-site disclaimer.", about_body, SITE_DOMAIN + "/about.html", "about.html", ""),
+    ("Contact GRAIN ROT Wiki", "How to reach the GRAIN ROT Wiki community and report corrections via official channels.", contact_body, SITE_DOMAIN + "/contact.html", "contact.html", ""),
+    ("Privacy Policy", "How GRAIN ROT Wiki handles analytics, cookies, and third-party links.", privacy_body, SITE_DOMAIN + "/privacy.html", "privacy.html", ""),
+]
+for s_title, s_desc, s_body, s_abs, s_fname, s_prefix in static_pages:
+    all_urls.append(s_abs)
+    if s_fname.startswith("inner/"):
+        out_path = os.path.join(INNER, s_fname.replace("inner/", ""))
+    else:
+        out_path = os.path.join(OUT, s_fname)
+    open(out_path, "w", encoding="utf-8").write(render_static(s_title, s_desc, s_body, s_abs, s_prefix))
 
 # ---- sitemap + robots ----
 open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8").write(build_sitemap(all_urls))
