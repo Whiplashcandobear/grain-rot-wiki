@@ -89,7 +89,7 @@ def related_section(current_keyword):
     lis = "".join("<li><a href='%s'>%s</a></li>" % (esc(fn), esc(k)) for k, fn in picks)
     return "<section class='blk related'><h2>Related guides</h2><ul>%s</ul></section>" % lis
 
-# ---- per-keyword page content (real, cross-verified; "待确认" where unverified) ----
+# ---- per-keyword page content (real, cross-verified; "to be confirmed" where unverified) ----
 pages = {
     "grain rot guide": {
         "title": "GRAIN ROT Guide - Beginner & Co-op Wiki",
@@ -99,7 +99,7 @@ pages = {
             ("The core loop (your first hour)", "Possess a Vessel, descend into the shifting underground ruins, scavenge furniture and loose loot, fight or avoid the Corrupted, then extract alive before the rot closes in. What you haul back upgrades the Sanctuary Outpost. The fan wiki already documents a Beginner Guide: First Hour in the Ruins (updated 2026-08-11), which breaks the opening loop into clear, repeatable steps rather than overwhelming you with systems."),
             ("Playing with friends", "GRAIN ROT supports 1-4 players in online co-op, or you can play entirely solo. The Outpost is held together by two brothers, Biggie and Murch - they are background NPCs who maintain the base, not robots you control. Your own starting avatar is the wooden Vessel you first possess; your Living Spark is the artificial soul that rides inside it."),
             ("Survival priorities that actually matter", "Keep your Vessel away from open flame (it is literally flammable wood), listen for the Corrupted because they react to sound and movement, and extract early rather than over-looting. Deeper layers bring rarer loot but stranger body-corruption and mutation modifiers that raise both risk and reward. Most bad runs end because someone got greedy."),
-            ("Where to go next", "Use the Start Here cards on the home page to jump into Enemies, Vessels & Loadouts, Co-op, Extraction, or Outpost building. Each inner page is written from verified Steam and patch-note facts, with anything still uncertain clearly marked as 待确认 so you never mistake a guess for a confirmed mechanic."),
+            ("Where to go next", "Use the Start Here cards on the home page to jump into Enemies, Vessels & Loadouts, Co-op, Extraction, or Outpost building. Each inner page is written from verified Steam and patch-note facts, with anything still uncertain clearly marked as \"to be confirmed\" so you never mistake a guess for a confirmed mechanic."),
         ],
     },
     "grain rot tutorial": {
@@ -141,7 +141,7 @@ pages = {
             ("Who Quill is", "Patch 1.06 (2026) explicitly notes that Quill no longer catches fire while patrolling outside the Outpost. That confirms Quill is a character who patrols the area outside the Sanctuary Outpost and that fire interaction was a known bug. This matches the research-oriented Dr. Quill framing seen in community discussion."),
             ("What Quill does", "Quill appears tied to research and the zone outside the Outpost. The specific research system - for example, where do I find Dr. Quill's research, or what the research unlocks - is not yet detailed in official or media sources we could cross-verify."),
             ("Open questions", "The exact research loop attached to Quill needs official disclosure or in-game verification. We will not invent a step-by-step process. Treat any claim that names specific research rewards as unverified until the devs document it."),
-            ("Tracking the facts", "As new patches land, we update this page from the official patch notes only. Patch 1.06 is the sole verified source for Quill's behavior so far, and we flag everything else as 待确认 rather than guess."),
+            ("Tracking the facts", "As new patches land, we update this page from the official patch notes only. Patch 1.06 is the sole verified source for Quill's behavior so far, and we flag everything else as \"to be confirmed\" rather than guess."),
         ],
     },
     "grain rot corrupted elite": {
@@ -219,7 +219,7 @@ pages = {
             ("What we know", "Patch 1.03 mentions a bunker door in the ancient facilities, which implies an ancient-facilities zone with door-lock mechanics. The Precision Chamber most likely maps to a room inside these facilities, gated behind that door."),
             ("What we do not know", "The exact unlock condition for the Precision Chamber - the items, switches, or sequence required - is not stated in any official or media source we could cross-verify. We will not invent steps to fill the gap."),
             ("Safe advice", "Explore the ancient facilities bunker doors and report back once the game documents the chamber. Treat any instant-unlock claim you see online as unverified until it is reproduced from the official patch notes."),
-            ("Why this page exists", "Search volume for this phrase is real, so we built the page to capture the verified context (ancient facilities, bunker door) and clearly mark the missing steps as 待确认, rather than publishing a fabricated walkthrough."),
+            ("Why this page exists", "Search volume for this phrase is real, so we built the page to capture the verified context (ancient facilities, bunker door) and clearly mark the missing steps as \"to be confirmed\", rather than publishing a fabricated walkthrough."),
         ],
     },
     "grain rot what do the dolls do": {
@@ -276,7 +276,7 @@ pages = {
             ("Deep Layer rewards", "Patch 1.07 added a new hat item in the Deep Layers, and patch 1.06 fixed legendary gumball rewards, a notable loot type. These are the verified 'secret' rewards worth hunting on deeper dives."),
             ("Hidden systems", "Ancient facilities, rolling boulder traps, and body-corruption or mutation mechanics form the deeper, stranger layers worth digging into. They reward players who push past the safe early routes."),
             ("Official hint", "The Steam description promises rarer loot and stranger mutations the deeper you dive - so secrets scale with risk. The further down you go, the more the game bends its own rules."),
-            ("Community discoveries", "Because the game is physics-driven, players keep finding emergent tricks (stacking, trap chaining, Sound-baiting Corrupted). We track verified ones and label the rest as 待确认."),
+            ("Community discoveries", "Because the game is physics-driven, players keep finding emergent tricks (stacking, trap chaining, Sound-baiting Corrupted). We track verified ones and label the rest as \"to be confirmed\"."),
         ],
     },
 }
@@ -397,7 +397,7 @@ footer a{color:var(--theme);text-decoration:none}
 </head>
 <body>
 <header><div class="logo">GRAIN ROT WIKI</div><nav class="nav"><a href="#start">Start Here</a><a href="#guides">All Guides</a><a href="#about">About</a><a href="#footer">Links</a></nav></header>
-<aside class="sidebar"><h4>Redeem / 兑换码</h4><div class="code">%s</div><div class="code" style="margin-top:8px">%s</div></aside>
+<aside class="sidebar"><h4>Redeem Codes</h4><div class="code">%s</div><div class="code" style="margin-top:8px">%s</div></aside>
 <section class="hero">
 <div class="eyebrow">%s</div>
 <h1>%s</h1>
